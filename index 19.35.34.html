@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abigail Canche — Ingeniera en Sistemas</title>
+  <meta name="description" content="Ingeniera en Sistemas Computacionales · Infraestructura · Redes · Full Stack · Cozumel, México">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #F2F2F0;
+      --bg2:     #E8E8E5;
+      --bg3:     #DDDDD9;
+      --surface: #FFFFFF;
+      --border:  rgba(0,0,0,0.10);
+      --accent:  #29B5E8;
+      --accent2: #0072C6;
+      --accent3: #00A3E0;
+      --text:    #1A1A2E;
+      --muted:   #5A6478;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'Inter', sans-serif;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--accent2);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+      mix-blend-mode: multiply;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(0,114,198,0.5);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.1s ease;
+    }
+    body:hover .cursor { transform: scale(1); }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(20px);
+      background: rgba(242,242,240,0.90);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent2);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent2); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent2);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--accent2);
+    }
+    h1 {
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .name-last {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--accent2);
+    }
+    .hero-title {
+      font-family: var(--mono);
+      font-size: 1rem;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.8;
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+    .hero-stats { display: flex; gap: 3rem; margin-bottom: 2.5rem; }
+    .stat-num {
+      font-family: var(--mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent2);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      margin-top: 0.3rem;
+    }
+    .hero-cta { display: flex; gap: 1rem; }
+    .btn {
+      padding: 0.75rem 1.75rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      border-radius: 4px;
+      cursor: none;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: var(--accent2);
+      color: #fff;
+      border: none;
+      font-weight: 700;
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      box-shadow: 0 0 30px rgba(41,181,232,0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--accent2);
+      border: 1px solid rgba(0,114,198,0.4);
+    }
+    .btn-outline:hover {
+      border-color: var(--accent2);
+      background: rgba(0,114,198,0.07);
+    }
+
+    /* PHOTO CARD */
+    .photo-card { position: relative; }
+    .photo-frame { position: relative; border-radius: 12px; overflow: hidden; }
+    .photo-frame img {
+      width: 100%; display: block;
+      filter: grayscale(20%) contrast(1.05);
+      transition: filter 0.5s;
+    }
+    .photo-frame:hover img { filter: grayscale(0%) contrast(1.1); }
+    .photo-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(242,242,240,0.8) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .photo-corner {
+      position: absolute;
+      width: 30px; height: 30px;
+      border-color: var(--accent2);
+      border-style: solid;
+    }
+    .photo-corner.tl { top: -8px; left: -8px; border-width: 2px 0 0 2px; }
+    .photo-corner.tr { top: -8px; right: -8px; border-width: 2px 2px 0 0; }
+    .photo-corner.bl { bottom: -8px; left: -8px; border-width: 0 0 2px 2px; }
+    .photo-corner.br { bottom: -8px; right: -8px; border-width: 0 2px 2px 0; }
+    .photo-badge {
+      position: absolute; bottom: 1.5rem; left: 1.5rem;
+      background: rgba(242,242,240,0.92);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      backdrop-filter: blur(10px);
+    }
+    .badge-loc {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+    }
+    .badge-name { font-size: 0.8rem; color: var(--text); font-weight: 600; margin-top: 2px; }
+
+    /* BG DECORATION */
+    .bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+    .bg-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+    }
+    .glow-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(41,181,232,0.12) 0%, transparent 70%);
+      top: -200px; right: -100px;
+    }
+    .glow-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(0,114,198,0.08) 0%, transparent 70%);
+      bottom: 0; left: 200px;
+    }
+
+    /* SECTIONS */
+    section { padding: 6rem 3rem; }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.25em;
+      margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1; max-width: 60px;
+      height: 1px; background: var(--accent2);
+    }
+    .section-title {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+    .section-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      font-weight: 300;
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 4rem;
+    }
+
+    /* SKILLS */
+    #skills { background: var(--bg2); }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      display: flex; align-items: center; gap: 1.5rem;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(41,181,232,0.05), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .skill-card:hover { border-color: rgba(41,181,232,0.4); transform: translateY(-3px); }
+    .skill-card:hover::before { opacity: 1; }
+
+    .donut-wrapper { position: relative; flex-shrink: 0; }
+    .donut-wrapper svg { transform: rotate(-90deg); }
+    .donut-bg { fill: none; stroke: rgba(0,0,0,0.08); }
+    .donut-fill {
+      fill: none;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .donut-pct {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .skill-info { flex: 1; }
+    .skill-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.4rem; }
+    .skill-sub { font-family: var(--mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.05em; }
+
+    /* LANGUAGES */
+    .languages-row {
+      display: flex; gap: 3rem;
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+      align-items: center;
+    }
+    .lang-item { text-align: center; }
+    .lang-donut { position: relative; margin: 0 auto 0.75rem; }
+    .lang-code { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; color: var(--text); }
+    .lang-label { font-size: 0.75rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* TIMELINE */
+    #experiencia { background: var(--bg); }
+    .timeline { position: relative; padding-left: 2rem; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent2), var(--accent), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      padding: 0 0 3.5rem 3rem;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: all 0.6s ease;
+    }
+    .timeline-item.visible { opacity: 1; transform: translateX(0); }
+    .timeline-dot {
+      position: absolute; left: -6px; top: 6px;
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 20px rgba(41,181,232,0.4);
+    }
+    .timeline-dot.past { background: var(--accent); box-shadow: 0 0 20px rgba(0,114,198,0.4); }
+    .t-period { font-family: var(--mono); font-size: 0.72rem; color: var(--accent2); letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+    .t-period.past { color: var(--accent); }
+    .t-role { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; letter-spacing: -0.01em; }
+    .t-company { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; }
+    .t-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.8; font-weight: 300; max-width: 600px; }
+    .t-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 3px;
+      border: 1px solid;
+      letter-spacing: 0.06em;
+    }
+    .tag-cyan   { color: var(--accent);  border-color: rgba(41,181,232,0.35);  background: rgba(41,181,232,0.08); }
+    .tag-purple { color: var(--accent2); border-color: rgba(0,114,198,0.30);   background: rgba(0,114,198,0.07); }
+    .tag-green  { color: var(--accent3); border-color: rgba(0,163,224,0.30);   background: rgba(0,163,224,0.07); }
+
+    /* PROJECTS */
+    #proyectos { background: var(--bg2); }
+    .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s;
+      cursor: none;
+    }
+    .project-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .project-card:hover { border-color: rgba(41,181,232,0.3); transform: translateY(-4px); }
+    .project-card:hover::after { transform: scaleX(1); }
+    .p-num {
+      font-family: var(--mono);
+      font-size: 3rem;
+      font-weight: 700;
+      color: rgba(0,0,0,0.05);
+      position: absolute; top: 1rem; right: 1.5rem;
+      line-height: 1;
+    }
+    .p-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+    .p-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.7; font-weight: 300; margin-bottom: 1.5rem; }
+    .p-link {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent2);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      transition: gap 0.3s;
+    }
+    .p-link:hover { gap: 0.8rem; }
+
+    /* TOOLS */
+    #herramientas { background: var(--bg); }
+    .tools-sections { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+    .tools-group {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.75rem;
+      transition: border-color 0.3s;
+    }
+    .tools-group:hover { border-color: rgba(41,181,232,0.35); }
+    .tools-group-title {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tool-item {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.5rem 0;
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      transition: color 0.3s;
+    }
+    .tool-item:last-child { border-bottom: none; }
+    .tool-item:hover { color: var(--text); }
+    .tool-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+
+    /* CONTACT */
+    #contacto { background: var(--bg2); text-align: center; }
+    .contact-grid {
+      display: flex;
+      justify-content: center; gap: 2rem;
+      flex-wrap: wrap;
+      margin-top: 3rem;
+    }
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem 2rem;
+      min-width: 200px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    }
+    .contact-card:hover {
+      border-color: var(--accent2);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(41,181,232,0.15);
+    }
+    .contact-icon { font-size: 1.5rem; margin-bottom: 0.25rem; }
+    .contact-type { font-family: var(--mono); font-size: 0.7rem; color: var(--accent2); letter-spacing: 0.15em; }
+    .contact-val { font-size: 0.85rem; color: var(--muted); }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .nav-links a.active { color: var(--accent2); }
+
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .photo-card { display: none; }
+      .skills-grid, .tools-sections { grid-template-columns: repeat(2,1fr); }
+      .projects-grid { grid-template-columns: 1fr; }
+      nav { padding: 1rem 1.5rem; }
+      section { padding: 5rem 1.5rem; }
+    }
+    @media (max-width: 600px) {
+      .skills-grid, .tools-sections { grid-template-columns: 1fr; }
+      .nav-links { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">AC / SYSTEMS</a>
+    <ul class="nav-links">
+      <li><a href="#skills">HABILIDADES</a></li>
+      <li><a href="#experiencia">EXPERIENCIA</a></li>
+      <li><a href="#proyectos">PROYECTOS</a></li>
+      <li><a href="#herramientas">STACK</a></li>
+      <li><a href="#contacto">CONTACTO</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="bg-grid"></div>
+    <div class="bg-glow glow-1"></div>
+    <div class="bg-glow glow-2"></div>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-tag">INGENIERA EN SISTEMAS COMPUTACIONALES</div>
+        <h1>ABIGAIL<br><span class="name-last">CANCHE</span></h1>
+        <div class="hero-title">_ INFRAESTRUCTURA · REDES · FULL STACK</div>
+        <p class="hero-desc">
+          Más de 10 años diseñando, administrando y asegurando infraestructuras TI críticas. Desde firewalls Fortinet hasta plataformas SaaS en producción. Cozumel, México.
+        </p>
+        <div class="hero-stats">
+          <div><div class="stat-num">10+</div><div class="stat-label">AÑOS EXP.</div></div>
+          <div><div class="stat-num">02</div><div class="stat-label">PROYECTOS LIVE</div></div>
+          <div><div class="stat-num">3</div><div class="stat-label">IDIOMAS</div></div>
+        </div>
+        <div class="hero-cta">
+          <a href="#proyectos" class="btn btn-primary">VER PROYECTOS</a>
+          <a href="#contacto" class="btn btn-outline">CONTACTO</a>
+        </div>
+      </div>
+      <div class="photo-card">
+        <div class="photo-frame">
+          <img src="photo.jpg" alt="Abigail Canche" onerror="this.style.display='none'; this.parentNode.style.background='#E8E8E5'; this.parentNode.style.minHeight='480px'">
+          <div class="photo-overlay"></div>
+        </div>
+        <div class="photo-corner tl"></div>
+        <div class="photo-corner tr"></div>
+        <div class="photo-corner bl"></div>
+        <div class="photo-corner br"></div>
+        <div class="photo-badge">
+          <div class="badge-loc">📍 COZUMEL, Q. ROO</div>
+          <div class="badge-name">Abigail Canche</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-inner">
+      <div class="section-label reveal">COMPETENCIAS TÉCNICAS</div>
+      <h2 class="section-title reveal">Nivel de<br>Habilidades</h2>
+      <p class="section-sub reveal">Especialización profunda en infraestructura de red y administración de sistemas, con capacidades emergentes en desarrollo full stack y automatización.</p>
+
+      <div class="skills-grid">
+        <div class="skill-card reveal" data-delay="0">
+          <div class="donut-wrapper">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <circle class="donut-bg" cx="40" cy="40" r="30" stroke-width="6"/>
+              <circle class="donut-fill" cx="40" cy="40" r="30" stroke-width="6" stroke="var(--accent)" stroke-dasharray="188.5" stroke-dashoffset="188.5" data-pct="90"/>
+            </svg>
+            <div class="donut-pct">90%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-name">Redes y Seguridad</div>
+            <div class="skill-sub">Fortinet · Ubiquiti · MikroTik</div>
+          </div>
+        </div>
+
+        <div class="skill-card reveal" data-delay="1">
+          <div class="donut-wrapper">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <circle class="donut-bg" cx="40" cy="40" r="30" stroke-width="6"/>
+              <circle class="donut-fill" cx="40" cy="40" r="30" stroke-width="6" stroke="var(--accent)" stroke-dasharray="188.5" stroke-dashoffset="188.5" data-pct="85"/>
+            </svg>
+            <div class="donut-pct">85%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-name">Admin. Servidores</div>
+            <div class="skill-sub">Windows Server · Linux</div>
+          </div>
+        </div>
+
+        <div class="skill-card reveal" data-delay="2">
+          <div class="donut-wrapper">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <circle class="donut-bg" cx="40" cy="40" r="30" stroke-width="6"/>
+              <circle class="donut-fill" cx="40" cy="40" r="30" stroke-width="6" stroke="var(--accent2)" stroke-dasharray="188.5" stroke-dashoffset="188.5" data-pct="80"/>
+            </svg>
+            <div class="donut-pct">80%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-name">PBX / VoIP</div>
+            <div class="skill-sub">SIP · Softphones · Linux PBX</div>
+          </div>
+        </div>
+
+        <div class="skill-card reveal" data-delay="3">
+          <div class="donut-wrapper">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <circle class="donut-bg" cx="40" cy="40" r="30" stroke-width="6"/>
+              <circle class="donut-fill" cx="40" cy="40" r="30" stroke-width="6" stroke="var(--accent3)" stroke-dasharray="188.5" stroke-dashoffset="188.5" data-pct="75"/>
+            </svg>
+            <div class="donut-pct">75%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-name">Full Stack Dev</div>
+            <div class="skill-sub">Next.js · Prisma · Vercel</div>
+          </div>
+        </div>
+
+        <div class="skill-card reveal" data-delay="4">
+          <div class="donut-wrapper">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <circle class="donut-bg" cx="40" cy="40" r="30" stroke-width="6"/>
+              <circle class="donut-fill" cx="40" cy="40" r="30" stroke-width="6" stroke="var(--accent2)" stroke-dasharray="188.5" stroke-dashoffset="188.5" data-pct="70"/>
+            </svg>
+            <div class="donut-pct">70%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-name">ERP & Contable</div>
+            <div class="skill-sub">SAP · Zoho · Odoo</div>
+          </div>
+        </div>
+
+        <div class="skill-card reveal" data-delay="5">
+          <div class="donut-wrapper">
+            <svg width="80" height="80" viewBox="0 0 80 80">
+              <circle class="donut-bg" cx="40" cy="40" r="30" stroke-width="6"/>
+              <circle class="donut-fill" cx="40" cy="40" r="30" stroke-width="6" stroke="var(--accent)" stroke-dasharray="188.5" stroke-dashoffset="188.5" data-pct="65"/>
+            </svg>
+            <div class="donut-pct">65%</div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-name">DevOps / Docker</div>
+            <div class="skill-sub">GitHub Actions · Azure DevOps</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LANGUAGES -->
+      <div class="languages-row reveal">
+        <div style="flex:1">
+          <div class="section-label" style="margin-bottom:0.5rem">IDIOMAS</div>
+          <p style="color:var(--muted); font-size:0.85rem; font-weight:300">Comunicación técnica y profesional en múltiples idiomas.</p>
+        </div>
+        <div style="display:flex; gap:3rem">
+          <div class="lang-item">
+            <div class="lang-donut" style="width:70px;height:70px;position:relative">
+              <svg width="70" height="70" viewBox="0 0 70 70" style="transform:rotate(-90deg)">
+                <circle fill="none" stroke="rgba(0,0,0,0.08)" cx="35" cy="35" r="28" stroke-width="5"/>
+                <circle fill="none" stroke="var(--accent2)" cx="35" cy="35" r="28" stroke-width="5" stroke-dasharray="175.9" stroke-dashoffset="0" stroke-linecap="round"/>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.85rem;font-weight:700;color:var(--text)">ESP</div>
+            </div>
+            <div class="lang-code">Nativo</div>
+          </div>
+          <div class="lang-item">
+            <div class="lang-donut" style="width:70px;height:70px;position:relative">
+              <svg width="70" height="70" viewBox="0 0 70 70" style="transform:rotate(-90deg)">
+                <circle fill="none" stroke="rgba(0,0,0,0.08)" cx="35" cy="35" r="28" stroke-width="5"/>
+                <circle fill="none" stroke="var(--accent)" cx="35" cy="35" r="28" stroke-width="5" stroke-dasharray="175.9" stroke-dashoffset="26.4" stroke-linecap="round"/>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.85rem;font-weight:700;color:var(--text)">ENG</div>
+            </div>
+            <div class="lang-code">C1</div>
+          </div>
+          <div class="lang-item">
+            <div class="lang-donut" style="width:70px;height:70px;position:relative">
+              <svg width="70" height="70" viewBox="0 0 70 70" style="transform:rotate(-90deg)">
+                <circle fill="none" stroke="rgba(0,0,0,0.08)" cx="35" cy="35" r="28" stroke-width="5"/>
+                <circle fill="none" stroke="var(--accent3)" cx="35" cy="35" r="28" stroke-width="5" stroke-dasharray="175.9" stroke-dashoffset="141" stroke-linecap="round"/>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:0.85rem;font-weight:700;color:var(--text)">DEU</div>
+            </div>
+            <div class="lang-code">A1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCIA -->
+  <section id="experiencia">
+    <div class="section-inner">
+      <div class="section-label reveal">TRAYECTORIA</div>
+      <h2 class="section-title reveal">Experiencia<br>Profesional</h2>
+      <p class="section-sub reveal">14+ años construyendo y manteniendo infraestructura TI crítica en entornos productivos de Quintana Roo.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="t-period">JUL 2015 — ACTUALIDAD</div>
+          <div class="t-role">Arquitecto de Infraestructura & Soporte TI</div>
+          <div class="t-company">Atlantis Submarines Cozumel · México</div>
+          <div class="t-desc">
+            Diseño y administración de infraestructura de red completa. Configuración de firewalls Fortinet (FortiGate): políticas de acceso y VPN. Administración de equipos MikroTik y Ubiquiti: routing, VLANs y puntos de acceso inalámbrico. Implementación de prácticas DevOps básicas para monitoreo y mantenimiento de ambientes.
+          </div>
+          <div class="t-tags">
+            <span class="tag tag-cyan">FortiGate</span>
+            <span class="tag tag-cyan">MikroTik</span>
+            <span class="tag tag-cyan">Ubiquiti</span>
+            <span class="tag tag-purple">VPN</span>
+            <span class="tag tag-green">DevOps</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot past"></div>
+          <div class="t-period past">AGO 2012 — ENE 2015</div>
+          <div class="t-role">Soporte TI — Administradora de Servidores</div>
+          <div class="t-company">Costamed · Cozumel, México</div>
+          <div class="t-desc">
+            Implementación, mantenimiento y monitoreo de redes. Administración de servidores Windows Server, Active Directory, Azure y bases de datos MySQL. Gestión de sistemas PBX/VoIP e instalación de sistemas CCTV.
+          </div>
+          <div class="t-tags">
+            <span class="tag tag-cyan">Windows Server</span>
+            <span class="tag tag-cyan">Active Directory</span>
+            <span class="tag tag-purple">Azure</span>
+            <span class="tag tag-purple">MySQL</span>
+            <span class="tag tag-green">PBX/VoIP</span>
+            <span class="tag tag-green">CCTV</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot past"></div>
+          <div class="t-period past">ENE 2011 — NOV 2011</div>
+          <div class="t-role">Desarrolladora Web</div>
+          <div class="t-company">Interactive Cozumel · México</div>
+          <div class="t-desc">
+            Diseño y desarrollo de sitios web usando PHP, MySQL, WordPress y Photoshop. Desarrollo de aplicaciones básicas en .NET.
+          </div>
+          <div class="t-tags">
+            <span class="tag tag-green">PHP</span>
+            <span class="tag tag-green">MySQL</span>
+            <span class="tag tag-cyan">WordPress</span>
+            <span class="tag tag-purple">.NET</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECTOS -->
+  <section id="proyectos">
+    <div class="section-inner">
+      <div class="section-label reveal">PORTFOLIO</div>
+      <h2 class="section-title reveal">Proyectos<br>Destacados</h2>
+      <p class="section-sub reveal">Proyectos full stack en producción, combinando infraestructura en la nube con desarrollo de producto.</p>
+
+      <div class="projects-grid">
+        <div class="project-card reveal">
+          <div class="p-num">01</div>
+          <div class="t-tags" style="margin-bottom:1.25rem">
+            <span class="tag tag-cyan">SAAS</span>
+            <span class="tag tag-green">BIOMETRÍA</span>
+            <span class="tag tag-purple">IOT</span>
+          </div>
+          <div class="p-title">Accesfy</div>
+          <div class="p-desc">
+            Plataforma SaaS para control de acceso en gimnasios mediante huella dactilar. Desarrollo full stack con integración de hardware biométrico físico e infraestructura en la nube.
+          </div>
+          <div class="t-tags" style="margin-bottom:1.5rem">
+            <span class="tag tag-cyan">Full Stack</span>
+            <span class="tag tag-purple">Hardware Integration</span>
+            <span class="tag tag-green">Cloud</span>
+          </div>
+          <a href="https://accesfy.app" target="_blank" class="p-link">accesfy.app →</a>
+        </div>
+
+        <div class="project-card reveal">
+          <div class="p-num">02</div>
+          <div class="t-tags" style="margin-bottom:1.25rem">
+            <span class="tag tag-green">NEXT.JS</span>
+            <span class="tag tag-cyan">PRISMA</span>
+            <span class="tag tag-purple">VERCEL</span>
+          </div>
+          <div class="p-title">Cozumel Birding Tours</div>
+          <div class="p-desc">
+            Sitio web full stack para empresa de turismo de naturaleza con avistamiento de aves. Arquitectura Next.js + Prisma ORM, desplegado en Vercel con sistema de reservaciones para audiencia internacional.
+          </div>
+          <div class="t-tags" style="margin-bottom:1.5rem">
+            <span class="tag tag-green">Full Stack</span>
+            <span class="tag tag-cyan">Reservaciones</span>
+            <span class="tag tag-purple">Internacional</span>
+          </div>
+          <a href="https://cozumelbirdingtours.com" target="_blank" class="p-link">cozumelbirdingtours.com →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERRAMIENTAS / STACK -->
+  <section id="herramientas">
+    <div class="section-inner">
+      <div class="section-label reveal">TECNOLOGÍAS</div>
+      <h2 class="section-title reveal">Stack &<br>Herramientas</h2>
+      <p class="section-sub reveal">Ecosistema tecnológico amplio desde infraestructura de red hasta automatización y desarrollo cloud.</p>
+
+      <div class="tools-sections">
+        <div class="tools-group reveal">
+          <div class="tools-group-title">INFRAESTRUCTURA</div>
+          <div class="tool-item"><span class="tool-dot"></span>Azure · Active Directory</div>
+          <div class="tool-item"><span class="tool-dot"></span>Windows Server</div>
+          <div class="tool-item"><span class="tool-dot"></span>Linux (Ubuntu / Debian)</div>
+          <div class="tool-item"><span class="tool-dot"></span>Fortinet (FortiGate)</div>
+          <div class="tool-item"><span class="tool-dot"></span>Ubiquiti · MikroTik</div>
+          <div class="tool-item"><span class="tool-dot"></span>MySQL</div>
+        </div>
+        <div class="tools-group reveal">
+          <div class="tools-group-title">ERP & FACTURACIÓN</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent2)"></span>SAP</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent2)"></span>Zoho</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent2)"></span>Odoo</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent2)"></span>API Facturación Electrónica</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent2)"></span>Sistemas Contables</div>
+        </div>
+        <div class="tools-group reveal">
+          <div class="tools-group-title">DESARROLLO & DEVOPS</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent3)"></span>Next.js · Prisma · Vercel</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent3)"></span>GitHub Actions</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent3)"></span>Azure DevOps</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent3)"></span>Docker</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent3)"></span>WordPress · PHP</div>
+          <div class="tool-item"><span class="tool-dot" style="background:var(--accent3)"></span>Python · Bash</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="section-inner">
+      <div class="section-label reveal" style="justify-content:center">CONTACTO</div>
+      <h2 class="section-title reveal">¿Hablamos?</h2>
+      <p class="section-sub reveal" style="margin:0 auto 0; text-align:center">
+        Disponible para proyectos de infraestructura, consultoría TI y desarrollo full stack.
+      </p>
+      <div class="contact-grid reveal">
+        <a href="mailto:abigail@example.com" class="contact-card">
+          <div class="contact-icon">✉️</div>
+          <div class="contact-type">EMAIL</div>
+          <div class="contact-val">abigail@example.com</div>
+        </a>
+        <a href="tel:9871039604" class="contact-card">
+          <div class="contact-icon">📱</div>
+          <div class="contact-type">TELÉFONO</div>
+          <div class="contact-val">987 103 9604</div>
+        </a>
+        <a href="https://linkedin.com/in/abigailnetwork/" target="_blank" class="contact-card">
+          <div class="contact-icon">💼</div>
+          <div class="contact-type">LINKEDIN</div>
+          <div class="contact-val">abigailnetwork</div>
+        </a>
+        <a href="https://github.com/ACLSYS/AbigailCL" target="_blank" class="contact-card">
+          <div class="contact-icon">⌨️</div>
+          <div class="contact-type">GITHUB</div>
+          <div class="contact-val">ACLSYS/AbigailCL</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span style="color:var(--accent2)">ABIGAIL CANCHE</span> · INGENIERA EN SISTEMAS · COZUMEL, QUINTANA ROO · MÉXICO
+  </footer>
+
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx - 5 + 'px';
+      cursor.style.top = my - 5 + 'px';
+    });
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx - 18 + 'px';
+      ring.style.top = ry - 18 + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+    document.querySelectorAll('a, button, .skill-card, .project-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.transform = 'scale(2.5)';
+        ring.style.transform = 'scale(1.5)';
+        ring.style.borderColor = 'rgba(0,114,198,0.8)';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.transform = 'scale(1)';
+        ring.style.transform = 'scale(1)';
+        ring.style.borderColor = 'rgba(0,114,198,0.5)';
+      });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const delay = e.target.dataset.delay ? parseFloat(e.target.dataset.delay) * 120 : 0;
+          setTimeout(() => {
+            e.target.classList.add('visible');
+            e.target.querySelectorAll('.donut-fill').forEach(d => animateDonut(d));
+          }, delay);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    const tlObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); tlObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.timeline-item').forEach(el => tlObs.observe(el));
+
+    function animateDonut(el) {
+      const pct = parseFloat(el.dataset.pct);
+      const circumference = 2 * Math.PI * 30;
+      const offset = circumference - (pct / 100) * circumference;
+      el.style.strokeDashoffset = offset;
+    }
+    setTimeout(() => {
+      document.querySelectorAll('.donut-fill').forEach(d => {
+        const card = d.closest('.skill-card');
+        if (card && card.classList.contains('visible')) animateDonut(d);
+      });
+    }, 300);
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 200) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.classList.remove('active');
+        if (a.getAttribute('href') === '#' + current) a.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
